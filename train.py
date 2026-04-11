@@ -455,7 +455,7 @@ DEPTH = 16              # number of Mamba-2 layers
 D_MODEL = 768           # model dimension
 EXPAND = 2              # expansion factor (d_inner = EXPAND * D_MODEL)
 HEAD_DIM = 64           # SSM head dimension
-D_STATE = 128           # SSM state dimension
+D_STATE = 64            # SSM state dimension
 D_CONV = 4              # causal conv kernel size
 CHUNK_SIZE = 64         # SSD block length
 
@@ -472,7 +472,7 @@ WARMDOWN_RATIO = 0.4     # fraction of time budget for LR warmdown
 FINAL_LR_FRAC = 0.0      # final LR as fraction of initial
 
 # Device
-DEVICE_BATCH_SIZE = 16    # micro-batch size (fits in 24GB A10G)
+DEVICE_BATCH_SIZE = 4     # micro-batch size (fits in 24GB A10G)
 
 # ---------------------------------------------------------------------------
 # Setup: tokenizer, model, optimizer, dataloader
