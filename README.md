@@ -134,7 +134,7 @@ mamba_auto_full/
 
 ## Acknowledgments
 
-This project uses the [AutoResearch](https://github.com/karpathy/autoresearch) framework by Andrej Karpathy, released under the [MIT License](https://github.com/karpathy/autoresearch/blob/master/LICENSE). The training script and experiment loop design are inspired by AutoResearch's approach to autonomous ML experimentation.
+This project uses the [AutoResearch](https://github.com/karpathy/autoresearch) framework by Andrej Karpathy.
 
 - **[Mamba-2](https://arxiv.org/abs/2405.21060)** by Tri Dao & Albert Gu — Structured State Space Duality
 - **[Mamba](https://arxiv.org/abs/2312.00752)** by Albert Gu & Tri Dao — Selective State Spaces
