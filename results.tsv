@@ -1,0 +1,61 @@
+commit	val_bpb	memory_gb	status	description
+c5ae3ca	1.930080	10.4	keep	baseline
+79ceb3a	0.000000	0.0	crash	d_model=1024 depth=24 OOM
+9efeeb7	2.038590	17.5	discard	d_model=1024 depth=20 too slow (7.7M tokens vs 12.3M)
+2d79d87	1.920815	10.4	keep	warmdown_ratio 0.4->0.1 (more time at peak LR)
+b7f13a2	1.921481	10.1	discard	Muon optimizer for 2D matrix weights (no improvement)
+4f55fb8	1.905031	10.4	keep	3x LR increase (matrix 0.001->0.003, scalar 0.01->0.03)
+db5d493	1.905164	10.4	discard	6x LR (0.006) no better than 3x
+3408c3d	1.907073	10.4	discard	Adam beta2 0.95->0.9 slightly worse
+0430e97	1.915081	12.7	discard	d_state=128 slower (10.4M tokens vs 12.3M)
+b4e7f67	1.903305	19.5	keep	DEVICE_BATCH_SIZE 4->8 (more tokens, higher MFU)
+933f456	1.908863	19.5	discard	remove logit softcap hurts stability
+29aa87e	1.899023	16.5	keep	HEAD_DIM 64->128 (faster, more tokens 14M, lower VRAM)
+488486c	1.897341	15.0	keep	HEAD_DIM 128->256 (n_heads=6, 14.7M tokens, 25.8% MFU)
+fec712a	1.898494	14.2	discard	HEAD_DIM=512 n_heads=3 too few heads, fewer tokens too
+a1d0b54	1.898504	15.0	discard	LR=0.006 at batch=8 HEAD_DIM=256 no improvement
+3610430	1.895017	15.0	keep	TOTAL_BATCH_SIZE 2^17->2^16 (212 steps vs 105, more updates)
+cbbc99d	1.895057	15.0	discard	TOTAL_BATCH_SIZE 2^15 no further gain (410 steps, diminishing returns)
+25ded78	1.896264	15.0	discard	grad clip 1.0 + LR=0.004 no improvement over LR=0.003
+7467707	1.898740	16.8	discard	DEPTH=18 fewer tokens (12.5M vs 13.9M) token-limited regime
+0ff6449	1.895006	15.0	discard	WEIGHT_DECAY=0 identical to 0.1 (noise level diff)
+db5d493	1.905164	10.4	discard	6x LR (0.006) no better than 3x
+4ee3934	1.882518	10.0	keep	D_MODEL 768->512 (34.8M params, 21.7M tokens, much lower VRAM)
+95e9066	1.881879	19.4	keep	DEVICE_BATCH_SIZE 8->16 at D_MODEL=512 (19.4GB, 22.3M tokens)
+0464708	1.881370	17.4	keep	simplify SSD: replace segsum with cumsum+outer-diff (cleaner, 17.4GB)
+f29a2c1	1.873972	13.3	keep	DEPTH 16->12 (29.5M tokens, 13.3GB, strong improvement)
+3b3c68a	1.883317	9.3	discard	DEPTH 12->8 too shallow (42.8M tokens but quality degraded)
+e551832	1.869786	11.3	keep	DEPTH 12->10 (34.9M tokens, 11.3GB, new best)
+48b7a47	1.865720	9.7	keep	D_MODEL 512->384 + HEAD_DIM 256->128 (15.7M params, 44.6M tokens)
+c184865	1.860837	6.8	keep	D_MODEL 384->256 HEAD_DIM=128 (8.5M params, 67.3M tokens)
+8385700	1.860210	13.6	keep	DEVICE_BATCH_SIZE 16->32 at D_MODEL=256 (marginal gain, no grad accum)
+a253966	1.861248	12.5	discard	D_MODEL 256->192 too small (5.6M params), quality degraded
+775e615	1.862341	15.9	discard	HEAD_DIM 128->64 (n_heads=8, more VRAM, fewer tokens, worse)
+1fddc56	1.863920	13.4	discard	WARMDOWN 0.1->0.05 worse (needs some cooldown for convergence)
+dad73e5	1.860996	13.4	discard	2x LR at D_MODEL=256 no improvement (LR already optimal)
+c2f555b	1.864088	16.3	discard	D_STATE 64->128 fewer tokens (56.8M vs 69.9M), worse
+22c63db	1.859373	13.4	keep	Adam beta2 0.95->0.999 (more stable variance, 1068 steps, new best)
+04effbd	1.857751	12.3	keep	DEPTH 10->9 (77M tokens, new best)
+83f03e3	1.856380	11.1	keep	DEPTH 9->8 at D_MODEL=256 (85.6M tokens, new best)
+450b16b	1.854653	10.0	keep	DEPTH 8->7 (96.4M tokens MFU 15.2% new best)
+9a87937	1.852811	8.9	keep	DEPTH 7->6 (110.4M tokens MFU 15.9% new best)
+a1967f4	1.850804	7.7	keep	DEPTH 6->5 (129M tokens MFU 16.8% new best)
+da39d9a	1.848859	6.6	keep	DEPTH 5->4 (155.5M tokens MFU 18% new best)
+f930cfc	1.846892	5.5	keep	DEPTH 4->3 (195.6M tokens MFU 20% new best)
+1619188	1.844333	4.3	keep	DEPTH 3->2 (263M tokens MFU 23% new best)
+b691e15	1.842370	3.2	keep	DEPTH 2->1 (357.8M tokens MFU 26.4% new best)
+8bacc1f	1.846139	3.0	discard	D_MODEL 256->192 at DEPTH=1 lower MFU (18.6% vs 26.4%) fewer tokens
+7de4ed0	1.996127	3.2	discard	weight tying with std=0.001 init broke embedding diversity
+17ab90c	1.994767	3.2	discard	weight tying std=1.0 lm_head gradient dominates at high embed_lr
+081ca35	1.842343	3.2	keep	D_CONV 4->8 marginal improvement at DEPTH=1
+e4dc092	1.842563	3.2	discard	FINAL_LR_FRAC 0.0->0.1 no improvement
+70cb9a1	1.842124	2.8	keep	EXPAND 2->1 HEAD_DIM 128->64 no expansion simpler more tokens 370M
+809e735	1.842844	3.6	discard	DEPTH 1->2 at EXPAND=1 fewer tokens 330M worse
+bf7e52a	1.842247	2.9	discard	head-specific B/C no improvement shared B/C better
+813eb3c	1.843442	2.8	discard	SCALAR_LR 0.03->0.1 hurts SSM training
+1093ae0	1.842111	2.8	keep	WEIGHT_DECAY 0.1->0.0 marginal simplification win
+67b4ecc	1.842171	3.0	discard	softcap 15->20 slightly worse
+69a6ef3	1.842155	2.8	discard	remove z gate marginally worse gate helps slightly
+9715b9e	1.843342	2.8	discard	UNEMBED_LR 0.012->0.03 hurts fewer tokens 349M
+6381516	1.842659	2.8	discard	beta1 0.9->0.95 worse
+ea861a8	1.842147	2.8	discard	EMBED_LR 0.1->0.2 no improvement
