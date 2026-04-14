@@ -93,45 +93,6 @@ With depth exhausted, the agent tried architectural tweaks (expand 2→1, d_conv
 
 The agent found a real insight in Phase 2 (model/data tradeoff) but couldn't stop. It followed "reduce size → more tokens → better loss" all the way to a single-layer model. A human would have recognized the diminishing returns and pivoted to orthogonal explorations. **AutoResearch is excellent at hill-climbing but lacks the metacognition to know when it's in a rut.**
 
----
-
-## Setup
-
-### Requirements
-
-- Python 3.10+
-- NVIDIA GPU with 24 GB+ VRAM (tested on A10G)
-- CUDA 12.1+
-
-### Install
-
-```bash
-# Clone
-git clone https://github.com/ethankurien/mamba_auto_full.git
-cd mamba_auto_full
-
-# Install dependencies (using uv)
-uv sync
-
-# Or with pip
-pip install torch>=2.4 numpy>=2.0 pandas>=2.0 pyarrow>=15.0 \
-    matplotlib>=3.10 requests>=2.32 rustbpe>=0.1.0 tiktoken>=0.11.0
-```
-
-### Run
-
-```bash
-# 1. Download and prepare the dataset
-python prepare.py
-
-# 2. Train the baseline model (5-minute budget)
-python train.py
-
-# 3. Regenerate visualizations from results
-python article_visuals.py
-```
-
-To run the full autonomous loop, use the [AutoResearch framework](https://github.com/karpathy/autoresearch) with `program.md` as the experiment instructions.
 
 ---
 
